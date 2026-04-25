@@ -6,7 +6,6 @@ from html_template import css, user_template, bot_template, source_template
 
 from src.pdf_loader import load_pdf_documents
 from src.chunk_splitter import split_documents
-from src.embeddings import get_embedding_model
 from src.vector_db import (
     check_qdrant_connection,
     create_vector_db,
@@ -77,11 +76,6 @@ with st.sidebar:
         accept_multiple_files=True
     )
 
-    embedding_provider = st.selectbox(
-        "Embedding provider",
-        ["huggingface", "ollama"]
-    )
-
     llm_provider = st.selectbox(
         "LLM provider",
         ["huggingface", "ollama", "gemini"]
@@ -143,13 +137,10 @@ with st.sidebar:
 
                     chunks = split_documents(documents)
 
-                    embedding_model = get_embedding_model(embedding_provider)
-
-                    vectorstore = create_vector_db(chunks, embedding_model)
+                    vectorstore = create_vector_db(chunks)
 
                     st.session_state.vectorstore = vectorstore
                     st.session_state.vectorstore_ready = True
-                    st.session_state.embedding_provider = embedding_provider
 
                     st.success(f"Processed {len(uploaded_files)} PDFs")
                     st.info(f"Created {len(chunks)} chunks")
@@ -209,11 +200,7 @@ if question:
     else:
         with st.spinner("Thinking..."):
             try:
-                embedding_model = get_embedding_model(
-                    st.session_state.get("embedding_provider", embedding_provider)
-                )
-
-                vectorstore = load_vector_db(embedding_model)
+                vectorstore = load_vector_db()
                 st.session_state.vectorstore = vectorstore
                 llm = get_llm(
                     provider=llm_provider,
