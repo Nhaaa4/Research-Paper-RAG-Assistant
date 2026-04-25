@@ -1,5 +1,18 @@
 # Research Paper RAG Assistant
 
+<p align="center">
+  <img src="assets/architecture.png" alt="Architecture Diagram" width="900"/>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-blue" />
+  <img src="https://img.shields.io/badge/Framework-Streamlit-red" />
+  <img src="https://img.shields.io/badge/RAG-LangChain-green" />
+  <img src="https://img.shields.io/badge/Search-Elasticsearch-yellow" />
+  <img src="https://img.shields.io/badge/LLM-Ollama%20%7C%20HuggingFace%20%7C%20Gemini-purple" />
+  <img src="https://img.shields.io/badge/License-MIT-black" />
+</p>
+
 ## Overview
 
 Research Paper RAG Assistant is an AI chatbot for asking questions over multiple research paper PDFs. Users can upload one or more papers, process them into searchable chunks, and ask natural language questions through a Streamlit interface.
@@ -21,22 +34,21 @@ The system uses Retrieval-Augmented Generation (RAG) to retrieve relevant contex
 
 The application follows a standard RAG pipeline:
 
-```text
-PDF Upload
-   |
-Layout-Aware PDF Extraction
-   |
-Text Chunking
-   |
-Embedding Generation
-   |
-Elasticsearch Indexing
-   |
-Hybrid Retrieval
-   |
-LLM Answer Generation
-   |
-Answer with Source Citations
+```mermaid
+flowchart TD
+    A[User uploads multiple PDFs] --> B[Layout-aware PDF Loader]
+    B --> C{Page Layout Detection}
+    C --> D[One-column extraction]
+    C --> E[Two-column extraction]
+    D --> F[Clean Ordered Text]
+    E --> F
+    F --> G[Chunk Splitter]
+    G --> H[Embedding Model]
+    H --> I[Elasticsearch Index]
+    I --> J[Hybrid Search]
+    J --> K[Relevant Context]
+    K --> L[LLM: Ollama or Gemini]
+    L --> M[Answer with Citations]
 ```
 
 ## Tech Stack
@@ -58,9 +70,6 @@ Answer with Source Citations
 ├── requirements.txt
 ├── html_template.py
 ├── data/
-│   └── uploaded_pdfs/
-├── notebooks/
-│   └── pdf_loader.ipynb
 └── src/
     ├── chunk_splitter.py
     ├── embeddings.py
@@ -75,8 +84,8 @@ Answer with Source Citations
 Clone the repository:
 
 ```bash
-git clone <your-repository-url>
-cd <your-repository-name>
+git clone https://github.com/Nhaaa4/Research-Paper-RAG-Assistant.git
+cd Research-Paper-RAG-Assistant
 ```
 
 Create and activate a virtual environment:
@@ -85,15 +94,10 @@ Create and activate a virtual environment:
 python -m venv .venv
 ```
 
-On Windows:
-
 ```bash
+# On Windows:
 .venv\Scripts\activate
-```
-
-On macOS or Linux:
-
-```bash
+# On macOS or Linux:
 source .venv/bin/activate
 ```
 
@@ -103,9 +107,10 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Create a `.env` file for Gemini support:
+Create a `.env` file for HuggingFace and Gemini support:
 
 ```env
+HUGGINGFACEHUB_API_TOKEN=your_huggingface_api_token_here
 GOOGLE_API_KEY=your_google_api_key_here
 ```
 
@@ -114,17 +119,7 @@ GOOGLE_API_KEY=your_google_api_key_here
 Start Elasticsearch with Docker:
 
 ```bash
-docker run --name elasticsearch \
-  -p 9200:9200 \
-  -e "discovery.type=single-node" \
-  -e "xpack.security.enabled=false" \
-  docker.elastic.co/elasticsearch/elasticsearch:8.17.0
-```
-
-If the container already exists, start it with:
-
-```bash
-docker start elasticsearch
+docker compose up
 ```
 
 ## Run the Application
@@ -218,6 +213,13 @@ What are the main limitations mentioned by the authors?
 - Support multilingual research papers.
 - Add OCR support for scanned PDFs.
 - Add document-level filtering and advanced metadata search.
+
+## Demo
+
+<p align="center">
+  <img src="assets/demo_1.png" alt="Demo 1" width="900"/>
+  <img src="assets/demo_2.png" alt="Demo 2" width="900"/>
+</p>
 
 ## License
 
