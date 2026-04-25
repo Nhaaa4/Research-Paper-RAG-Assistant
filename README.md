@@ -34,21 +34,22 @@ The system uses Retrieval-Augmented Generation (RAG) to retrieve relevant contex
 
 The application follows a standard RAG pipeline:
 
-```mermaid
-flowchart TD
-    A[User uploads multiple PDFs] --> B[Layout-aware PDF Loader]
-    B --> C{Page Layout Detection}
-    C --> D[One-column extraction]
-    C --> E[Two-column extraction]
-    D --> F[Clean Ordered Text]
-    E --> F
-    F --> G[Chunk Splitter]
-    G --> H[Embedding Model]
-    H --> I[Elasticsearch Index]
-    I --> J[Hybrid Search]
-    J --> K[Relevant Context]
-    K --> L[LLM: Ollama or Gemini]
-    L --> M[Answer with Citations]
+```text
+PDF Upload
+   |
+Layout-Aware PDF Extraction
+   |
+Text Chunking
+   |
+Embedding Generation
+   |
+Elasticsearch Indexing
+   |
+Hybrid Retrieval
+   |
+LLM Answer Generation
+   |
+Answer with Source Citations
 ```
 
 ## Tech Stack
