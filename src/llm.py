@@ -4,7 +4,7 @@ from langchain_ollama import ChatOllama
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 
 
-DEFAULT_OLLAMA_MODEL = "qwen3.5:latest"
+DEFAULT_OLLAMA_MODEL = "qwen3.5"
 DEFAULT_HUGGINGFACE_MODEL = "Qwen/Qwen3-8B"
 DEFAULT_GEMINI_MODEL = "gemini-2.5-flash"
 
