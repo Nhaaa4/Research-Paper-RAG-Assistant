@@ -139,7 +139,7 @@ docker compose ps
 Qdrant will be available at:
 
 ```text
-http://localhost:6333/dashboard
+http://localhost:6333
 ```
 
 Qdrant data is persisted in:
